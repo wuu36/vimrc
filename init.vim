@@ -122,7 +122,7 @@ Plug 'theniceboy/vim-deus'
 Plug 'scrooloose/nerdtree'
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
-
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Markdown 
 Plug 'suan/vim-instant-markdown',{'for':'markdown'}
 Plug 'dhruvasagar/vim-table-mode'
@@ -171,7 +171,7 @@ let g:table_mode_align_char=':'
     " augroup END
 " endif
 
-colorscheme gruvbox
+"colorscheme gruvbox
 
 
 "===
@@ -182,4 +182,42 @@ autocmd TermOpen term://* startinsert " when :term, into terminal and jump into 
 tnoremap <C-N> <C-\><C-N>   
 tnoremap <C-O> <C-\><C-N><C-O>
 
+"===
+"=== autocmd gruvbox
+"===
+let g:gruvbox_contrast_dark='hard'
+let g:gruvbos_contrast_light='hard'
+"let g:gruvbox_transparent_bg=0
+"Workaround for creating transparent bg
+autocmd SourcePost * highlight Normal     ctermbg=NONE guibg=NONE
+        \ |    highlight LineNr     ctermbg=NONE guibg=NONE
+        \ |    highlight SignColumn ctermbg=NONE guibg=NONE
+autocmd vimenter * ++nested colorscheme gruvbox
 
+"===
+"=== coc.nvim
+"===
+set hidden
+set updatetime=100
+set shortmess+=c
+let g:coc_global_extensions = [
+    \ 'coc-json', 
+    \ 'coc-vimlsp',
+    \ 'coc-marketplace']
+
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <C-o> coc#refresh()
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
