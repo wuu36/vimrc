@@ -3,4 +3,4 @@
 1. test
 2. todo list
 
-this is first commit.
+this is second commit.
